@@ -1,0 +1,153 @@
+mysql> use vishnu;
+Database changed
+mysql> create table school(
+    -> id int(100),
+    -> name varchar(100),
+    -> marks int(100));
+Query OK, 0 rows affected, 2 warnings (1.12 sec)
+
+mysql> insert into school(id,name,marks) values(1,'abc',80),(2,'de',50),(3,'fg',90);
+Query OK, 3 rows affected (0.09 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select*from school;
++------+------+-------+
+| id   | name | marks |
++------+------+-------+
+|    1 | abc  |    80 |
+|    2 | de   |    50 |
+|    3 | fg   |    90 |
++------+------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table college(
+    -> roll int(100),
+    -> name varchar(100),
+    -> cgpa int(100));
+Query OK, 0 rows affected, 2 warnings (0.74 sec)
+
+mysql> select*from college;
+Empty set (0.00 sec)
+
+mysql> insert into college(roll,name,cgpa) values(123,'abc',8),(456,'de',6),(789,'fg',9);
+Query OK, 3 rows affected (0.09 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select*from college;
++------+------+------+
+| roll | name | cgpa |
++------+------+------+
+|  123 | abc  |    8 |
+|  456 | de   |    6 |
+|  789 | fg   |    9 |
++------+------+------+
+3 rows in set (0.01 sec)
+
+mysql>  select id,marks from school,college where school.name=college.name;
++------+-------+
+| id   | marks |
++------+-------+
+|    1 |    80 |
+|    2 |    50 |
+|    3 |    90 |
++------+-------+
+3 rows in set (0.00 sec)
+
+leftjoin:
+mysql> select id,marks from school left join college on school.name=college.name;
++------+-------+
+| id   | marks |
++------+-------+
+|    1 |    80 |
+|    2 |    50 |
+|    3 |    90 |
++------+-------+
+3 rows in set (0.00 sec)
+
+Right join:
+mysql> select id,cgpa from school right join college on school.name=college.name;
++------+------+
+| id   | cgpa |
++------+------+
+|    1 |    8 |
+|    2 |    6 |
+|    3 |    9 |
++------+------+
+3 rows in set (0.00 sec)
+full join:
+mysql> select id,marks from school left join college on school.name=college.name union all select id,cgpa from school right join college on school.name=college.name;
++------+-------+
+| id   | marks |
++------+-------+
+|    1 |    80 |
+|    2 |    50 |
+|    3 |    90 |
+|    1 |     8 |
+|    2 |     6 |
+|    3 |     9 |
++------+-------+
+6 rows in set (0.00 sec)
+
+mysql> aggregate functions
+    -> select sum(marks) from school;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'aggregate functions
+select sum(marks) from school' at line 1
+mysql> select sum(marks) from school;
++------------+
+| sum(marks) |
++------------+
+|        220 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(marks) from school;
++------------+
+| avg(marks) |
++------------+
+|    73.3333 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select max(cgpa) from college;
++-----------+
+| max(cgpa) |
++-----------+
+|         9 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select min(cgpa) from college;
++-----------+
+| min(cgpa) |
++-----------+
+|         6 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select count(cgpa) from college;
++-------------+
+| count(cgpa) |
++-------------+
+|           3 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select*from college where name='abc';
++------+------+------+
+| roll | name | cgpa |
++------+------+------+
+|  123 | abc  |    8 |
++------+------+------+
+1 row in set (0.00 sec)
+
+mysql> select*from college where name>='a' and name<='c';
++------+------+------+
+| roll | name | cgpa |
++------+------+------+
+|  123 | abc  |    8 |
++------+------+------+
+1 row in set (0.01 sec)
+
+mysql> 
+
+
