@@ -1,0 +1,232 @@
+mysql> CREATE DATABASE aspire;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| aspire             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> CREATE TABLE employee(Name varchar(200),Rollno int,id int);
+ERROR 1046 (3D000): No database selected
+mysql> select database aspire;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'aspire' at line 1
+mysql> select aspire;
+ERROR 1054 (42S22): Unknown column 'aspire' in 'field list'
+mysql> SELECT aspire;
+ERROR 1054 (42S22): Unknown column 'aspire' in 'field list'
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| aspire             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> USE aspire;
+Database changed
+mysql> CREATE TABLE employee(
+    -> name varchar(100),
+    -> age int,
+    -> id varchar(100)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SHOW TABLES;
++------------------+
+| Tables_in_aspire |
++------------------+
+| employee         |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> DESCRIBE employee;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| name  | varchar(100) | YES  |     | NULL    |       |
+| age   | int          | YES  |     | NULL    |       |
+| id    | varchar(100) | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> DROP TABLE employee;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> USE aspire;
+Database changed
+mysql> create table school(
+    ->     -> id int(100),
+    ->     -> name varchar(100),
+    -> ^C^C
+
+^C
+mysql> USE aspire;
+Database changed
+mysql> create table student;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table student(
+    -> name varchar(20),
+    -> age int,
+    -> address varchar(100),
+    -> city varchar(20),
+    -> country varchar(20),
+    -> Phonenumber int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> describe student;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| name        | varchar(20)  | YES  |     | NULL    |       |
+| age         | int          | YES  |     | NULL    |       |
+| address     | varchar(100) | YES  |     | NULL    |       |
+| city        | varchar(20)  | YES  |     | NULL    |       |
+| country     | varchar(20)  | YES  |     | NULL    |       |
+| Phonenumber | int          | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql>   insert into student(name,age,address,city,country,phonenumber) values('vishnu',21,'No.6 Gandji
+street','Coimbatore','India',1234567891),(name,age,address,city,country,phonenumber) values('vishnu',21,'No.6 Gandji
+street','Coimbatore','India',1234567891),(name,age,address,city,country,phonenumber) values('vishnu',21,'No.6 Gandji;
+^C
+mysql> street','Coimbatore','India',1234567891)
+    '> ^C
+
+^C
+mysql> insert into student(name,age,address,city,country,phonenumber) values('vishnu',21,'No.6 Gandji
+    '> street','Coimbatore','India',1234567891);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> describe student;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| name        | varchar(20)  | YES  |     | NULL    |       |
+| age         | int          | YES  |     | NULL    |       |
+| address     | varchar(100) | YES  |     | NULL    |       |
+| city        | varchar(20)  | YES  |     | NULL    |       |
+| country     | varchar(20)  | YES  |     | NULL    |       |
+| Phonenumber | int          | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select *from student;
++--------+------+--------------------+------------+---------+-------------+
+| name   | age  | address            | city       | country | Phonenumber |
++--------+------+--------------------+------------+---------+-------------+
+| vishnu |   21 | No.6 Gandji
+street | Coimbatore | India   |  1234567891 |
++--------+------+--------------------+------------+---------+-------------+
+1 row in set (0.00 sec)
+
+mysql>     delete from student where address='No.6 Gandji street',city='coimbatore',country='India',phonenumber='1234567891';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',city='coimbatore',country='India',phonenumber='1234567891'' at line 1
+mysql> update student
+    -> set address='No.6 Gandji street',city='coimbatore',country='India',phonenumber='1234567891';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from student;
++--------+------+--------------------+------------+---------+-------------+
+| name   | age  | address            | city       | country | Phonenumber |
++--------+------+--------------------+------------+---------+-------------+
+| vishnu |   21 | No.6 Gandji street | coimbatore | India   |  1234567891 |
++--------+------+--------------------+------------+---------+-------------+
+1 row in set (0.00 sec)
+
+mysql> create table west;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table west(
+    -> name varchar(20),
+    -> age int,
+    -> roll varchar(20),);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 4
+mysql> create table west(
+    ->     -> name varchar(20),
+    ->     -> age int,
+    ->     -> roll varchar(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> name varchar(20),
+    -> age int,
+    -> roll varchar(20))' at line 2
+mysql>  create table west(
+    ->     ->     -> name varchar(20),
+    ->     ->     -> age int,
+    ->     ->     -> roll varchar(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '->     -> name varchar(20),
+    ->     -> age int,
+    ->     -> roll varchar(20' at line 2
+mysql>  create table west(
+    ->     ->     -> name varchar(20),
+    ->     ->     -> age int,
+    ->     ->     -> roll varchar(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '->     -> name varchar(20),
+    ->     -> age int,
+    ->     -> roll varchar(20' at line 2
+mysql> create table west(
+    ->     -> name varchar(20),
+    ->     -> age int,
+    -> roll varchar(20))
+    -> 
+    -> 
+    -> ^C
+
+^C
+mysql> create table west(
+    -> name varchar(20),
+    -> age int,
+    -> roll varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select *from west;
+Empty set (0.00 sec)
+
+mysql> Insert into west(name,age,roll)values('Vishnu','21','id1'),('pranavi',22,'id2');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from west;
++---------+------+------+
+| name    | age  | roll |
++---------+------+------+
+| Vishnu  |   21 | id1  |
+| pranavi |   22 | id2  |
++---------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> delete from west where roll='id1';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from west;
++---------+------+------+
+| name    | age  | roll |
++---------+------+------+
+| pranavi |   22 | id2  |
++---------+------+------+
+1 row in set (0.00 sec)
+
+mysql> drop table west;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++------------------+
+| Tables_in_aspire |
++------------------+
+| student          |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+
+
