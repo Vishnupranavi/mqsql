@@ -1,0 +1,283 @@
+asplap3188@Asplap3188:~$ sudo mysql
+[sudo] password for asplap3188: 
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+asplap3188@Asplap3188:~$ sudo mysql -u root -r
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+asplap3188@Asplap3188:~$ sudo mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.29-0ubuntu0.20.04.3 (Ubuntu)
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use database india;
+ERROR 1049 (42000): Unknown database 'database'
+mysql> show databses;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databses' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| aspire             |
+| india              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0.01 sec)
+
+mysql> use india;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_india |
++-----------------+
+| department      |
+| employee        |
+| name            |
+| tamilnadu       |
++-----------------+
+4 rows in set (0.00 sec)
+
+mysql> drop department;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'department' at line 1
+mysql> drop table department;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> drop table employee;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table department(
+    -> departmentid int PRIMARYKEY,
+    -> departmentname varchar(255),
+    -> departmenthead varchar(20)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PRIMARYKEY,
+departmentname varchar(255),
+departmenthead varchar(20)
+)' at line 2
+mysql> create table employee(
+    -> Id int AUTO_INCREMENT,
+    -> Name varchar(21),
+    -> Age int,
+    -> department varchar(20),
+    -> PRIMARY KEY(department)
+    -> );
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> create table employee(
+    -> ^C
+
+^C
+mysql> create table department(
+    -> departmentid varchar(20),
+    -> departmentname varchar(20),
+    -> departmenthead varchar(20),
+    -> primarykey(departmentname)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(departmentname)
+)' at line 5
+mysql> create table department( departmentid varchar(20), departmentname varchar(20), departmenthead varchar(20), PRIMARYKEY(departmentname) );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(departmentname) )' at line 1
+mysql> create table department( departmentid varchar(20), departmentname varchar(20), departmenthead varchar(20), PRIMARY KEY(departmentname) );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT*FROM department;
+Empty set (0.00 sec)
+
+mysql> Insert into(departmentid,departmentname,departmenthead)Values("123","Lamp","Arun"),("456","Java","Anitha");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(departmentid,departmentname,departmenthead)Values("123","Lamp","Arun"),("456","' at line 1
+mysql> Insert into department(departmentid,departmentname,departmenthead)Values("123","Lamp","Arun"),("456","Java","Anitha");
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select*from department;
++--------------+----------------+----------------+
+| departmentid | departmentname | departmenthead |
++--------------+----------------+----------------+
+| 456          | Java           | Anitha         |
+| 123          | Lamp           | Arun           |
++--------------+----------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> create table employee(
+    -> Id int AUTO_INCREMENT,
+    -> Name varchar(20),
+    -> Age varchar
+
+^C
+mysql> create table employee(Id int AUTO_INCREMENT UNIQUE NOTNULL,Name varchar(20),age int,departmentname varchar(20),PRIMARY KEY(Id),FOREIGN KEY(departmentname)REFERENCES department(departmentname),ON DELETE CASCADE);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NOTNULL,Name varchar(20),age int,departmentname varchar(20),PRIMARY KEY(Id),FORE' at line 1
+mysql> create table employee(Id int AUTO_INCREMENT UNIQUE,Name varchar(20),age int,departmentname varchar(20),PRIMARY KEY(Id),FOREIGN KEY(departmentname)REFERENCES department(departmentname),ON DELETE CASCADE);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ON DELETE CASCADE)' at line 1
+mysql> create table employee(Id int AUTO_INCREMENT UNIQUE,Name varchar(20),age int,departmentname varchar(20),PRIMARY KEY(Id),FOREIGN KEY(departmentname)REFERENCES department(departmentname) ON DELETE CASCADE);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO employee(name,age,departmentname)values("Vishnu",20,"bfs");
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`india`.`employee`, CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`departmentname`) REFERENCES `department` (`departmentname`) ON DELETE CASCADE)
+mysql> Insert into employee(name,age,departmentname)values("Vishnu",20,"Lamp");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Insert into employee(name,age,departmentname)values("Anu",21,"Java");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from employee;
++----+--------+------+----------------+
+| Id | Name   | age  | departmentname |
++----+--------+------+----------------+
+|  2 | Vishnu |   20 | Lamp           |
+|  3 | Anu    |   21 | Java           |
++----+--------+------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> delete from department where departmentname="Java";
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from department;
++--------------+----------------+----------------+
+| departmentid | departmentname | departmenthead |
++--------------+----------------+----------------+
+| 123          | Lamp           | Arun           |
++--------------+----------------+----------------+
+1 row in set (0.00 sec)
+
+mysql> select*from employee;
++----+--------+------+----------------+
+| Id | Name   | age  | departmentname |
++----+--------+------+----------------+
+|  2 | Vishnu |   20 | Lamp           |
++----+--------+------+----------------+
+1 row in set (0.00 sec)
+
+mysql> insert values into employee(name,age,departmentname)values("riya",21,"lamp");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values into employee(name,age,departmentname)values("riya",21,"lamp")' at line 1
+mysql> Insert into employee(name,age,departmentname)values("Riya",21,"Lamp");
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select*from employee;
++----+--------+------+----------------+
+| Id | Name   | age  | departmentname |
++----+--------+------+----------------+
+|  2 | Vishnu |   20 | Lamp           |
+|  4 | Riya   |   21 | Lamp           |
++----+--------+------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select*from department;
++--------------+----------------+----------------+
+| departmentid | departmentname | departmenthead |
++--------------+----------------+----------------+
+| 123          | Lamp           | Arun           |
++--------------+----------------+----------------+
+1 row in set (0.00 sec)
+
+mysql> describe department;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| departmentid   | varchar(20) | YES  |     | NULL    |       |
+| departmentname | varchar(20) | NO   | PRI | NULL    |       |
+| departmenthead | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into department(departmentid,departmentname,departmenthead)values("123","Lamp","Vishnu");
+ERROR 1062 (23000): Duplicate entry 'Lamp' for key 'department.PRIMARY'
+mysql> drop table employee;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> drop table department;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table department(
+    -> dept_id int,
+    -> dept_name varchar(20),
+    -> dept_head varchar(20)
+    -> 
+
+^C
+mysql> create table department(
+    -> dept_id int,
+    -> dept_name varchar(25),
+    -> dept_head varchar(25),
+    -> PRIMARY KEY(dept_id)
+
+^C
+mysql> create table department(dept_id int AUTO_INCREMENT,dept_name varchar(25),dept_head varchar(24),primarykey(dept_id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(dept_id))' at line 1
+mysql> create table department(dept_id int AUTO_INCREMENT,dept_name varchar(25),dept_head varchar(24),primary key(dept_id));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into department(dept_name,dept_head)values("Lamp","Arun"),("Java","Anitha");
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select*from department;
++---------+-----------+-----------+
+| dept_id | dept_name | dept_head |
++---------+-----------+-----------+
+|       1 | Lamp      | Arun      |
+|       2 | Java      | Anitha    |
++---------+-----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> create table employee(id int AUTO_INCREMENT,name varchar(27),age int,dept_id int,PRIMARY KEY(id),FOREIGN KEY(dept_id)REFERENCES department(dept_id) ON CASCADE DELETE);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CASCADE DELETE)' at line 1
+mysql> create table employee(id int AUTO_INCREMENT,name varchar(27),age int,dept_id int,PRIMARY KEY(id),FOREIGN KEY(dept_id)REFERENCES department(dept_id) ON DELETE CASCADE);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT into employee(name,age,dept_id)values("vishnu",21,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT into employee(name,age,dept_id)values("riya",21,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT into employee(name,age,dept_id)values("riya",21,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT into employee(name,age,dept_id)values("riya",21,6);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`india`.`employee`, CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE)
+mysql> select*from employee;
++----+--------+------+---------+
+| id | name   | age  | dept_id |
++----+--------+------+---------+
+|  1 | vishnu |   21 |       1 |
+|  2 | riya   |   21 |       2 |
+|  3 | riya   |   21 |       2 |
++----+--------+------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select*from employee where name="vishnu";
++----+--------+------+---------+
+| id | name   | age  | dept_id |
++----+--------+------+---------+
+|  1 | vishnu |   21 |       1 |
++----+--------+------+---------+
+1 row in set (0.00 sec)
+
+mysql> select*from employee,department where dept_id=1;
+ERROR 1052 (23000): Column 'dept_id' in where clause is ambiguous
+mysql> select department.dept_id,department.dept_name,department.dept_head,employee.id,employee.name,employee.age,employee.dept_id FROM Department FULL OUTER JOIN employee ON department.dept_id=employee.dept_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'OUTER JOIN employee ON department.dept_id=employee.dept_id' at line 1
+mysql> select department.dept_id,department.dept_name,dept_head,employee.id,employee.name,employee.age,employee.dept_id FROM department,employee where employee.name="vishnu";
++---------+-----------+-----------+----+--------+------+---------+
+| dept_id | dept_name | dept_head | id | name   | age  | dept_id |
++---------+-----------+-----------+----+--------+------+---------+
+|       1 | Lamp      | Arun      |  1 | vishnu |   21 |       1 |
+|       2 | Java      | Anitha    |  1 | vishnu |   21 |       1 |
++---------+-----------+-----------+----+--------+------+---------+
+2 rows in set (0.01 sec)
+
+mysql> 
+
+
